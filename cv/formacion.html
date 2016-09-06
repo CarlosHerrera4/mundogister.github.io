@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Timeline | navigation menu</title>
+
+    <style type="text/css">
+        body, html, input {
+            font-family: verdana;;
+            font-size: 10pt;
+        }
+
+        #visualization {
+            position: relative;
+        }
+
+        .menu {
+            position: absolute;
+            top: 110px;
+            right: 0;
+            margin: 10px;
+            z-index: 9999;
+            width: 100%;
+        }
+        .menu #moveLeft {
+          float: left;
+          margin-left: 100px;
+        }
+        .menu #moveRight {
+          float:right;
+          margin-right: 100px;
+        }
+        div.vis-item {
+          /*width: 450px;*/
+          background-color: #2c3e50;
+          color: #ffffff;
+          /*width:800px;*/
+        }
+        div.vis-background div.negative {
+          background-color: #a6a6a6;
+        }
+        div.vis-background div.positive {
+          background-color: #d9d9d9;
+        }
+    </style>
+
+    <script src="http://visjs.org/dist/vis.js"></script>
+    <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
+    <script src="http://visjs.org/examples/googleAnalytics.js"></script>
+</head>
+<body>
+  <br>
+
+<p>
+    <!-- Create your own navigation menu by creating an overlay with buttons to zoom and move. -->
+</p>
+
+<div id="visualization">
+    <div class="menu">
+        <!-- <input type="button" id="zoomIn" value="Zoom in"/>
+        <input type="button" id="zoomOut" value="Zoom out"/> -->
+        <input type="image" id="moveLeft" value="Move left" src="https://cdn2.iconfinder.com/data/icons/arrows-and-universal-actions-icon-set/256/left-48.png"/>
+        <input type="image" id="moveRight" value="Move right" src="https://cdn2.iconfinder.com/data/icons/arrows-and-universal-actions-icon-set/256/right-48.png"/>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // create a timeline with some data
+    var container = document.getElementById('visualization');
+    var items = new vis.DataSet([
+        {id: 'A', content: 'Geomática y Topografía', start: '2014-05-01', end: '2014-08-31', type: 'background', className: 'positive'},
+        {id: 'B', content: 'GIS & Desarrollo Web', start: '2014-09-01', end: '2016-09-01', type: 'background', className: 'negative'},
+        {id: 1, title: 'AAAAAA', content: 'Ingeniería Técnica en Topografía', start: '2014-7-14', type: 'box'},
+        {id: 2, content: 'Experto GIS: ArcGIS, gvSIG y QGIS', start: '2014-09-01', end: '2014-10-30'},
+        {id: 3, content: 'Desarrollo de aplicaciones web mapping', start: '2014-10-29', end: '2015-01-01'},
+        {id: 4, content: 'Python para ArcGIS', start: '2015-01-10', end: '2015-02-28', type: 'range'},
+        {id: 5, content: 'Certificación Energética de Edificios Existentes. Opción Simplificada con CE3 y CE3X', start: '2015-01-01', end: '2015-02-28'},
+        {id: 6, content: 'Especialista en Análisis de Redes con ArcGIS 10 y Network Analyst', start: '2015-03-01', end: '2015-04-30'},
+        {id: 7, content: 'Máster GIS Esri España', start: '2015-10-01', end: '2016-04-15'},
+    ]);
+    var options = {
+      width: '100%',
+      height: '350px',
+      start: '2014-01-01',
+      end: '2016-12-31',
+      margin: {item:0},
+      editable: true
+
+    };
+    var timeline = new vis.Timeline(container, items, options);
+
+    /**
+     * Move the timeline a given percentage to left or right
+     * @param {Number} percentage   For example 0.1 (left) or -0.1 (right)
+     */
+    function move (percentage) {
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+            start: range.start.valueOf() - interval * percentage,
+            end:   range.end.valueOf()   - interval * percentage
+        });
+    }
+
+    /**
+     * Zoom the timeline a given percentage in or out
+     * @param {Number} percentage   For example 0.1 (zoom out) or -0.1 (zoom in)
+     */
+    function zoom (percentage) {
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+            start: range.start.valueOf() - interval * percentage,
+            end:   range.end.valueOf()   + interval * percentage
+        });
+    }
+
+    // attach events to the navigation buttons
+    // document.getElementById('zoomIn').onclick    = function () { zoom(-0.2); };
+    // document.getElementById('zoomOut').onclick   = function () { zoom( 0.2); };
+    document.getElementById('moveLeft').onclick  = function () { move( 0.2); };
+    document.getElementById('moveRight').onclick = function () { move(-0.2); };
+
+</script>
+</body>
+</html>
