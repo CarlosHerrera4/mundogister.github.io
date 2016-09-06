@@ -104,7 +104,7 @@ function defineDojoConfig() {
   };
 }
 
-app.isProduction = false;
+app.isProduction = true;
 
 defineDojoConfig();
 window.dojoConfig.locale = 'en';
